@@ -832,14 +832,14 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
         uint256 allocPoint;         // How many allocation points assigned to this pool. STAR to distribute per block.
         uint256 lastRewardBlock;    // Last block number that STAR distribution occurs.
         uint256 accStarPerShare;    // Accumulated STAR per share, times 1e12. See below.
-        uint16 depositFeeBP;        // Deposit fee in basis points
+        uint256 depositFeeBP;        // Deposit fee in basis points
         uint256 harvestInterval;    // Harvest interval in seconds
         uint256 totalLp;            // Total Token in Pool
         uint256 depositFees;        //Current deposit fee ready for retrieval
     }
 
     // The STAR TOKEN!
-    address public star = 0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741;
+    address public star = 0x8440178087C4fd348D43d0205F4574e0348a06F0;
     // Star Pool index - so we can set it once pools are made used by compound function
     uint256 private starId = 6;
     // The operator can only update EmissionRate and AllocPoint to protect tokenomics
@@ -904,7 +904,7 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
 
         //STAR - ETH
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x8330a1262d49d7b41a47b914f1d2eb20540c3b11),
+        lpToken : IERC20(0x8330a1262D49d7B41a47b914F1d2EB20540C3B11),
         allocPoint : 150,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
@@ -964,7 +964,7 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
        
         //STAR
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x1fB241da53e3B550A3E70fc66fC79C40F0499445),
+        lpToken : IERC20(0x8440178087C4fd348D43d0205F4574e0348a06F0),
         allocPoint : 300,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
