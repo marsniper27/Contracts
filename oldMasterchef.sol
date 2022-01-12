@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at polygonscan.com on 2021-12-28
+*/
+
 // SPDX-License-Identifier: MIT
 
 // OpenZeppelin Contracts v4.4.0 (utils/Context.sol)
@@ -845,11 +849,13 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
     // The operator can only update EmissionRate and AllocPoint to protect tokenomics
     //i.e some wrong setting and a pools get too much allocation accidentally
     address private _operator;
+    // Dev address.
+    address public devAddress;
     // STAR tokens created per block.
     uint256 public starPerBlock = 256849315068493;
     uint256 public constant MAX_STAR_PER_BLOCK = 126 * 6 ** 18;
     // Bonus multiplier for early star makers.
-    uint256 public BONUS_MULTIPLIER = 1;
+    uint256 public BONUS_MULTIPLIER = 11;
     // Max harvest interval: 14 days.
     uint256 public constant MAXIMUM_HARVEST_INTERVAL = 14 days;
     // Info of each pool.
@@ -866,7 +872,7 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
     uint256 public totalStarInPools;
 
     // Maximum deposit fee rate: 10%
-    uint16 public constant MAXIMUM_DEPOSIT_FEE_RATE = 10000;
+    uint16 public constant MAXIMUM_DEPOSIT_FEE_RATE = 1000;
 
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
@@ -887,73 +893,71 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
         //StartBlock always many years later from contract construct, will be set later in StartFarming function
         startBlock = block.number + (10 * 365 * 24 * 60 * 60);
         
+
+        devAddress = msg.sender;
         _operator = 0xF60De76791c2F09995df52Aa1c6e2E7DcF1E75d7;
         emit OperatorTransferred(address(0), _operator);
 
-        //STAR - WMATIC
+
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0xa740f2D3A26Fc0e5eA730eFa319086801F27B389),
-        allocPoint : 150,
+        lpToken : IERC20(0xFbfe7C5c437eFFD9730913804e4CD8B890D62A9c),
+        allocPoint : 700,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
 
-        //STAR - ETH
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x8330a1262d49d7b41a47b914f1d2eb20540c3b11),
-        allocPoint : 150,
+        lpToken : IERC20(0x5D36360798BaC73c3Fb14A3D6EA5550023a224A6),
+        allocPoint : 700,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
 
-        //STAR - DHV
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0xdDC024345A06C20f71a3897e5929D2fF7dD0d2a4),
-        allocPoint : 150,
+        lpToken : IERC20(0xe3874712E1569a4Fe332B609667e21bb1B2a7a2b),
+        allocPoint : 2200,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
         
-        //STAR - MAI
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0xEE334207453191F4594836Dc6C4546DfC2bD08c5),
-        allocPoint : 150,
+        lpToken : IERC20(0x1083c85029bf1728636a7fE7A6f3a5B9aBa7B4b9),
+        allocPoint : 700,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
 
-        //STAR - WBTC
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0xe2feC5e707666eA1E2ABc3c8662e14007E859E47),
-        allocPoint : 150,
+        lpToken : IERC20(0xe1146dA6E36729903366397bDAaA2781F3707Ff4),
+        allocPoint : 700,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
 
-        //WBTC
+
         poolInfo.push(PoolInfo({
         lpToken : IERC20(0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6),
-        allocPoint : 30,
+        allocPoint : 100,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
         depositFeeBP : 4000,
@@ -962,46 +966,20 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
         depositFees: 0
         }));
        
-        //STAR
         poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x1fB241da53e3B550A3E70fc66fC79C40F0499445),
-        allocPoint : 300,
+        lpToken : IERC20(0xC6e2e8395A671eE3f6f55177F8Fe5984D5dA7741),
+        allocPoint : 5500,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
-        depositFeeBP : 500,
+        depositFeeBP : 0,
         harvestInterval : 28800,
         totalLp : 0,
         depositFees: 0
         }));
 
-        //WETH
         poolInfo.push(PoolInfo({
         lpToken : IERC20(0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619),
-        allocPoint : 30,
-        lastRewardBlock : startBlock,
-        accStarPerShare : 0,
-        depositFeeBP : 4000,
-        harvestInterval : 28800,
-        totalLp : 0,
-        depositFees: 0
-        }));
-
-        //Matic
-        poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x0000000000000000000000000000000000001010),
-        allocPoint : 30,
-        lastRewardBlock : startBlock,
-        accStarPerShare : 0,
-        depositFeeBP : 4000,
-        harvestInterval : 28800,
-        totalLp : 0,
-        depositFees: 0
-        }));
-
-        //WETH
-        poolInfo.push(PoolInfo({
-        lpToken : IERC20(0x5fCB9de282Af6122ce3518CDe28B7089c9F97b26),
-        allocPoint : 30,
+        allocPoint : 100,
         lastRewardBlock : startBlock,
         accStarPerShare : 0,
         depositFeeBP : 4000,
@@ -1064,6 +1042,13 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
 
 ////////////////// address functions //////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // Update dev address by the previous dev.
+    function setDevAddress(address _devAddress) public {
+        require(msg.sender == devAddress, "setDevAddress: FORBIDDEN");
+        require(_devAddress != address(0), "setDevAddress: ZERO");
+        devAddress = _devAddress;
+    }
+    
     //Set the contract address for Star Token
     function setstarContractAddress(address _address) external onlyOwner {
         require(_address != address(0),"Address is 0 address");
@@ -1230,7 +1215,7 @@ contract StarSeedsMasterchef is Ownable, ReentrancyGuard {
 
         PoolInfo storage pool = poolInfo[_pid];
         require(pool.lpToken.allowance(msg.sender,address(this))>=_amount,"Lp token Allowance is to low.");
-        require (_amount > pool.depositFeeBP.div(1000),"Deposit needs to be greater then deposit fee.");
+        require (_amount > pool.depositFeeBP,"Deposit needs to be greater then deposit fee.");
         UserInfo storage user = userInfo[_pid][msg.sender];
         updatePool(_pid);
         payOrLockupPendingStar(_pid,msg.sender);
