@@ -42,7 +42,9 @@ contract MyToken is ERC20, ERC20Burnable, Ownable {
 
     function withdraw(uint256 amount)external onlyOwner{
         require(amount!=0, "swapOut: invalid amount");
-        require(mai.balanceOf(address(this))>=amount, "withdraw: Not enough miMatic in reserves");
+        uint256 maiBalance = mai.balanceOf(address(this));
+        require(maiBalance >= amount, "withdraw: Not enough miMatic in reserves");
+        require(maiblance.sub(totalSupply())>=amount, "withdraw: Not enough miMatic in reserves");
         mai.transfer(owner(),amount);
     }
 }
